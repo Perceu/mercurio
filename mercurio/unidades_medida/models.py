@@ -3,16 +3,18 @@ from mercurio.core.models import BaseModel
 
 
 # Create your models here.
-class UnidadeMedidaCategoria(BaseModel):
-    nome = models.CharField(max_length=80)
-
 
 class UnidadeMedida(BaseModel):
     nome = models.CharField(max_length=80)
     sigla = models.CharField(max_length=5)
-    categoria = models.ForeignKey(UnidadeMedidaCategoria, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.nome}"
+    
+class UnidadeMedidaConversoes(BaseModel):
+    unidade_origem = models.ForeignKey(UnidadeMedida, related_name='origem', on_delete=models.CASCADE)
+    unidade_destino = models.ForeignKey(UnidadeMedida, related_name='destino', on_delete=models.CASCADE)
     multiplicador = models.FloatField()
-    divisor = models.FloatField()
-    unidade_base = models.BooleanField(default=False)
-    multiplo = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='aumenta_base')
-    submultiplo = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='diminui_base')
+
+    def __str__(self):
+        return f"{self.unidade_origem} -> {self.unidade_destino}"

@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from mercurio.core.views import home_teste
 
 urlpatterns = [
+    path('teste', home_teste),
     path('', admin.site.urls),
 ]
